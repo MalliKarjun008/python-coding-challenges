@@ -1,4 +1,8 @@
 def calculate_result(m1, m2, m3):
+    for m in (m1, m2, m3):
+        if not isinstance(m, (int, float)) or m < 0 or m > 100:
+            raise ValueError("Invalid marks")
+
     total = m1 + m2 + m3
     average = total / 3
 
@@ -16,11 +20,19 @@ def calculate_result(m1, m2, m3):
 
 def main():
     name = input("Enter student name: ")
-    m1 = float(input("Enter marks 1: "))
-    m2 = float(input("Enter marks 2: "))
-    m3 = float(input("Enter marks 3: "))
+    try:
+        m1 = float(input("Enter marks 1: "))
+        m2 = float(input("Enter marks 2: "))
+        m3 = float(input("Enter marks 3: "))
+    except ValueError:
+        print("Invalid input. Enter numeric marks only.")
+        return
 
-    total, average, result = calculate_result(m1, m2, m3)
+    try:
+        total, average, result = calculate_result(m1, m2, m3)
+    except ValueError as e:
+        print(e)
+        return
 
     print("Name:", name)
     print("Total:", total)
@@ -33,9 +45,23 @@ def test_cases():
     assert calculate_result(50, 50, 50)[2] == "2nd Class"
     assert calculate_result(35, 35, 35)[2] == "Pass Class"
     assert calculate_result(10, 20, 30)[2] == "Fail"
+    assert calculate_result(75.5, 60.5, 80)[2] == "1st Class"
+
+    try:
+        calculate_result(-10, 50, 60)
+        assert False
+    except ValueError:
+        pass
+
+    try:
+        calculate_result(110, 90, 80)
+        assert False
+    except ValueError:
+        pass
+
     print("All test cases passed!")
 
 
 if __name__ == "__main__":
-    main()
     test_cases()
+    main()
