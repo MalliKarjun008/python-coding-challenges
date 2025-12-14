@@ -1,36 +1,32 @@
-
-def calculate_sum_and_average(a, b):
+def sum_and_avg(a, b):
     total = a + b
     average = total / 2
     return total, average
 
 
 def main():
-    # User input
-    a = float(input("Enter first number: "))
-    b = float(input("Enter second number: "))
+    try:
+        a = int(input("Enter first number: "))
+        b = int(input("Enter second number: "))
+    except ValueError:
+        print("Invalid input. Please enter integers only.")
+        return
 
-    total, avg = calculate_sum_and_average(a, b)
+    total, average = sum_and_avg(a, b)
+    print(f"Sum is: {total}")
+    print(f"Average is: {average}")
 
-    print("Sum:", total)
-    print("Average:", avg)
 
-
-# ---------------- TEST CASES ----------------
 def test_cases():
-    # Positive cases
-    assert calculate_sum_and_average(10, 20) == (30, 15)
-    assert calculate_sum_and_average(5, 5) == (10, 5)
+    assert sum_and_avg(10, 10) == (20, 10.0)
+    assert sum_and_avg(-5, -15) == (-20, -10.0)
+    assert sum_and_avg(0, 0) == (0, 0.0)
+    assert sum_and_avg(-10, 20) == (10, 5.0)
+    assert sum_and_avg(10**9, 10**9) == (2 * 10**9, 10**9)
 
-    # Negative cases
-    assert calculate_sum_and_average(-10, -20) == (-30, -15)
-
-    # Edge cases
-    assert calculate_sum_and_average(0, 0) == (0, 0)
-
-    print("All test cases passed!")
+    print("All test cases passed successfully.")
 
 
 if __name__ == "__main__":
-    main()
     test_cases()
+    main()
