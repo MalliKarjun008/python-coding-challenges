@@ -1,15 +1,13 @@
 def generate_series(n):
     series = []
     current = 1
-    primes = [3, 3, 5, 11, 13, 17, 19, 23]
+    diffs = [3, 3, 5,11]
     i = 0
 
     while current <= n:
         series.append(current)
-        if i >= len(primes):
-            break
-        current += primes[i]
-        i += 1
+        current += diffs[i]
+        i = (i+1)%len(diffs)
 
     return series
 
