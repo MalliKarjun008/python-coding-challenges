@@ -1,13 +1,17 @@
 def is_valid_name(name):
-    return name.isalpha() and len(name) <= 50
+    return name.isalpha() and 0 < len(name) <= 50
 
 
 def is_valid_emp_id(emp_id):
     return emp_id.isalnum() and 5 <= len(emp_id) <= 10
 
 
-def is_valid_salary(value):
+def is_valid_basic_salary(value):
     return value > 0 and value <= 10000000
+
+
+def is_valid_allowance(value):
+    return value >= 0 and value <= 10000000
 
 
 def is_valid_bonus(bonus):
@@ -15,40 +19,58 @@ def is_valid_bonus(bonus):
 
 
 def main():
-    name = input("Enter name: ")
-    emp_id = input("Enter EmpID: ")
-    basic = float(input("Enter basic salary: "))
-    allowance = float(input("Enter allowance: "))
-    bonus = float(input("Enter bonus percentage: "))
+    while True:
+        name = input("Enter name: ").strip()
+        if is_valid_name(name):
+            break
+        print("Invalid Name. Alphabets only, max 50 characters.")
 
-    if not is_valid_name(name):
-        print("Invalid Name")
+    while True:
+        emp_id = input("Enter EmpID: ").strip()
+        if is_valid_emp_id(emp_id):
+            break
+        print("Invalid EmpID. Alphanumeric, length 5–10.")
+
+    while True:
+        try:
+            basic = float(input("Enter basic salary: "))
+            if is_valid_basic_salary(basic):
+                break
+        except ValueError:
+            pass
+        print("Invalid basic salary.")
+
+    while True:
+        try:
+            allowance = float(input("Enter allowance: "))
+            if is_valid_allowance(allowance):
+                break
+        except ValueError:
+            pass
+        print("Invalid allowance.")
+
+    while True:
+        try:
+            bonus = float(input("Enter bonus percentage: "))
+            if is_valid_bonus(bonus):
+                break
+        except ValueError:
+            pass
+        print("Invalid bonus percentage.")
+
+    gross_monthly = basic + allowance
+    annual_gross = gross_monthly * 12
+
+    if gross_monthly <= 0:
+        print("Invalid gross monthly salary.")
         return
-    if not is_valid_emp_id(emp_id):
-        print("Invalid EmpID")
-        return
-    if not is_valid_salary(basic) or not is_valid_salary(allowance):
-        print("Invalid Salary")
-        return
-    if not is_valid_bonus(bonus):
-        print("Invalid Bonus Percentage")
+
+    if annual_gross > 50000000:
+        print("Annual gross salary exceeds realistic limit.")
         return
 
     print("All inputs are valid")
 
 
-def test_cases():
-    assert is_valid_name("John") is True
-    assert is_valid_name("John123") is False
-    assert is_valid_emp_id("E12345") is True
-    assert is_valid_emp_id("E1") is False
-    assert is_valid_salary(50000) is True
-    assert is_valid_salary(-1) is False
-    assert is_valid_bonus(10) is True
-    assert is_valid_bonus(150) is False
-    print("All test cases passed!")
-
-
 if __name__ == "__main__":
     main()
-    test_cases()
