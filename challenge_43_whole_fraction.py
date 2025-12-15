@@ -1,29 +1,42 @@
-def separate_whole_fraction(value):
-    whole = int(value)
-    fraction = value - whole
-    return whole, fraction
+def whole_fraction(n):
+    if not isinstance(n, (int, float)):
+        raise ValueError("Input must be a number")
+
+    whole_part = int(n)
+    fraction_part = round(n - whole_part, 10)
+
+    return whole_part, fraction_part
 
 
 def main():
-    value = float(input("Enter a number: "))
-    whole, fraction = separate_whole_fraction(value)
-    print("Whole Part:", whole)
-    print("Fraction Part:", fraction)
+    while True:
+        try:
+            n = float(input("Enter a double value: "))
+            whole, fraction = whole_fraction(n)
+            break
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
+
+    print("Whole Value:", whole)
+    print("Fractional Value:", fraction)
 
 
 def test_cases():
-    w, f = separate_whole_fraction(12.75)
-    assert w == 12 and round(f, 2) == 0.75
+    assert whole_fraction(12.34) == (12, 0.34)
+    assert whole_fraction(0.56) == (0, 0.56)
+    assert whole_fraction(-7.89) == (-7, -0.89)
+    assert whole_fraction(5.0) == (5, 0.0)
+    assert whole_fraction(3) == (3, 0.0)
 
-    w, f = separate_whole_fraction(5.0)
-    assert w == 5 and f == 0.0
-
-    w, f = separate_whole_fraction(0.25)
-    assert w == 0 and round(f, 2) == 0.25
+    try:
+        whole_fraction("3.14")
+        assert False
+    except ValueError:
+        pass
 
     print("All test cases passed!")
 
 
 if __name__ == "__main__":
-    main()
     test_cases()
+    main()

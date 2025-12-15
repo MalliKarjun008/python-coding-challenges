@@ -1,25 +1,43 @@
-def create_array(n, elements):
-    return elements[:n]
+def read_array(n):
+    if not isinstance(n, int) or n <= 0:
+        raise ValueError("N must be a positive integer")
+
+    arr = []
+    for i in range(n):
+        arr.append(int(input(f"Enter element {i + 1}: ")))
+
+    return arr
 
 
 def main():
-    n = int(input("Enter n: "))
-    elements = []
+    while True:
+        try:
+            n = int(input("Enter number of elements N: "))
+            array = read_array(n)
+            break
+        except ValueError:
+            print("Invalid input. Please enter valid integers.")
 
-    for _ in range(n):
-        elements.append(int(input("Enter element: ")))
-
-    arr = create_array(n, elements)
-    print(arr)
+    print("Array elements:")
+    print(array)
 
 
 def test_cases():
-    assert create_array(3, [1, 2, 3, 4]) == [1, 2, 3]
-    assert create_array(0, [1, 2]) == []
-    assert create_array(2, [5, 6]) == [5, 6]
-    print("All test cases passed!")
+    try:
+        read_array(0)
+        assert False
+    except ValueError:
+        pass
+
+    try:
+        read_array(-3)
+        assert False
+    except ValueError:
+        pass
+
+    print("Test cases passed (manual input required for full test).")
 
 
 if __name__ == "__main__":
-    main()
     test_cases()
+    main()

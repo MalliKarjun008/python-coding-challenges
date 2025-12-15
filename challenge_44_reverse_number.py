@@ -1,26 +1,49 @@
 def reverse_number(n):
+    if not isinstance(n, int):
+        raise ValueError("Input must be an integer")
+
     sign = -1 if n < 0 else 1
-    n = abs(n)
-    rev = 0
-    while n > 0:
-        rev = rev * 10 + (n % 10)
-        n //= 10
-    return sign * rev
+    reversed_num = int(str(abs(n))[::-1])
+
+    return sign * reversed_num
 
 
 def main():
-    n = int(input("Enter number: "))
-    print(reverse_number(n))
+    while True:
+        try:
+            n = int(input("Enter an integer N: "))
+            result = reverse_number(n)
+            break
+        except ValueError:
+            print("Invalid input. Please enter an integer.")
+
+    print("Reversed Number:")
+    print(result)
 
 
 def test_cases():
-    assert reverse_number(1234) == 4321
-    assert reverse_number(1000) == 1
-    assert reverse_number(-123) == -321
+    assert reverse_number(123) == 321
     assert reverse_number(0) == 0
+    assert reverse_number(5) == 5
+    assert reverse_number(9081726354) == 4536271809
+    assert reverse_number(-123) == -321
+    assert reverse_number(-100) == -1
+
+    try:
+        reverse_number(4.5)
+        assert False
+    except ValueError:
+        pass
+
+    try:
+        reverse_number("123")
+        assert False
+    except ValueError:
+        pass
+
     print("All test cases passed!")
 
 
 if __name__ == "__main__":
-    main()
     test_cases()
+    main()
