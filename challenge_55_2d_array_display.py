@@ -1,41 +1,52 @@
-def create_2d_array(rows, cols, values):
+def create_2d_array(rows, cols):
+    if not isinstance(rows, int) or not isinstance(cols, int):
+        raise ValueError("Rows and columns must be integers")
+    if rows < 0 or cols < 0:
+        raise ValueError("Rows and columns must be non-negative")
+
     matrix = []
-    idx = 0
-    for _ in range(rows):
+    for i in range(rows):
         row = []
-        for _ in range(cols):
-            row.append(values[idx])
-            idx += 1
+        for j in range(cols):
+            row.append(int(input(f"Enter element [{i + 1}][{j + 1}]: ")))
         matrix.append(row)
+
     return matrix
 
 
 def main():
-    rows = int(input("Enter number of rows: "))
-    cols = int(input("Enter number of columns: "))
-    values = []
+    while True:
+        try:
+            rows = int(input("Enter number of rows: "))
+            cols = int(input("Enter number of columns: "))
+            matrix = create_2d_array(rows, cols)
+            break
+        except ValueError:
+            print("Invalid input. Please enter valid integers.")
 
-    for _ in range(rows * cols):
-        values.append(int(input("Enter element: ")))
-
-    matrix = create_2d_array(rows, cols, values)
+    print("2D Array (Row-wise):")
     for row in matrix:
-        print(*row)
+        print(row)
 
 
 def test_cases():
-    m = create_2d_array(2, 2, [1, 2, 3, 4])
-    assert m == [[1, 2], [3, 4]]
+    assert create_2d_array(0, 0) == []
 
-    m = create_2d_array(1, 3, [5, 6, 7])
-    assert m == [[5, 6, 7]]
+    try:
+        create_2d_array(-1, 3)
+        assert False
+    except ValueError:
+        pass
 
-    m = create_2d_array(0, 0, [])
-    assert m == []
+    try:
+        create_2d_array(2, "3")
+        assert False
+    except ValueError:
+        pass
 
-    print("All test cases passed!")
+    print("Test cases passed (manual input required for elements).")
 
 
 if __name__ == "__main__":
-    main()
     test_cases()
+    main()

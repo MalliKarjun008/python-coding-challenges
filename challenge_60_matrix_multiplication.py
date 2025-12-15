@@ -1,68 +1,113 @@
-def multiply_matrices(a, b):
+def multiply_matrix(a, b):
+    if not isinstance(a, list) or not isinstance(b, list):
+        raise ValueError("Inputs must be lists of lists")
+
     if not a or not b:
         return []
 
-    rows_a = len(a)
     cols_a = len(a[0])
     rows_b = len(b)
+
+    for row in a:
+        if not isinstance(row, list) or len(row) != cols_a:
+            raise ValueError("Invalid first matrix")
+
     cols_b = len(b[0])
+    for row in b:
+        if not isinstance(row, list) or len(row) != cols_b:
+            raise ValueError("Invalid second matrix")
 
     if cols_a != rows_b:
-        return None
+        raise ValueError(
+            "Number of columns in first matrix must equal number of rows in second matrix"
+        )
 
-    result = [[0 for _ in range(cols_b)] for _ in range(rows_a)]
+    result = []
 
-    for i in range(rows_a):
+    for i in range(len(a)):
+        row = []
         for j in range(cols_b):
+            cell_sum = 0
             for k in range(cols_a):
-                result[i][j] += a[i][k] * b[k][j]
+                cell_sum += a[i][k] * b[k][j]
+            row.append(cell_sum)
+        result.append(row)
 
     return result
 
 
 def main():
-    r1 = int(input("Enter rows of first matrix: "))
-    c1 = int(input("Enter columns of first matrix: "))
-    a = []
-    for _ in range(r1):
+    while True:
+        try:
+            rows_a = int(input("Enter number of rows for first matrix: "))
+            cols_a = int(input("Enter number of columns for first matrix: "))
+            if rows_a < 0 or cols_a < 0:
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid input. Please enter non-negative integers.")
+
+    matrix_a = []
+    for i in range(rows_a):
         row = []
-        for _ in range(c1):
-            row.append(int(input("Enter element: ")))
-        a.append(row)
+        for j in range(cols_a):
+            while True:
+                try:
+                    row.append(int(input(f"Enter element [{i+1}][{j+1}] for first matrix: ")))
+                    break
+                except ValueError:
+                    print("Invalid input. Please enter an integer.")
+        matrix_a.append(row)
 
-    r2 = int(input("Enter rows of second matrix: "))
-    c2 = int(input("Enter columns of second matrix: "))
-    b = []
-    for _ in range(r2):
+    while True:
+        try:
+            rows_b = int(input("Enter number of rows for second matrix: "))
+            cols_b = int(input("Enter number of columns for second matrix: "))
+            if rows_b < 0 or cols_b < 0 or cols_a != rows_b:
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid input. Columns of first matrix must equal rows of second matrix.")
+
+    matrix_b = []
+    for i in range(rows_b):
         row = []
-        for _ in range(c2):
-            row.append(int(input("Enter element: ")))
-        b.append(row)
+        for j in range(cols_b):
+            while True:
+                try:
+                    row.append(int(input(f"Enter element [{i+1}][{j+1}] for second matrix: ")))
+                    break
+                except ValueError:
+                    print("Invalid input. Please enter an integer.")
+        matrix_b.append(row)
 
-    result = multiply_matrices(a, b)
+    product = multiply_matrix(matrix_a, matrix_b)
 
-    if result is None:
-        print("Matrix multiplication not possible")
-    else:
-        print("Resultant Matrix:")
-        for row in result:
-            print(*row)
+    print("Product of the two matrices:")
+    for row in product:
+        print(row)
 
 
 def test_cases():
-    a = [[1, 2], [3, 4]]
-    b = [[5, 6], [7, 8]]
-    assert multiply_matrices(a, b) == [[19, 22], [43, 50]]
+    assert multiply_matrix([[1, 2], [3, 4]], [[5, 6], [7, 8]]) == [[19, 22], [43, 50]]
+    assert multiply_matrix([[1, 2, 3]], [[4], [5], [6]]) == [[32]]
+    assert multiply_matrix([[1]], [[2]]) == [[2]]
 
-    a = [[1, 2, 3]]
-    b = [[4], [5], [6]]
-    assert multiply_matrices(a, b) == [[32]]
+    try:
+        multiply_matrix("123", [[1]])
+        assert False
+    except ValueError:
+        pass
 
-    assert multiply_matrices([[1, 2]], [[1, 2]]) is None
+    try:
+        multiply_matrix([[1, 2]], [[1, 2]])
+        assert False
+    except ValueError:
+        pass
 
     print("All test cases passed!")
 
 
 if __name__ == "__main__":
-    main()
     test_cases()
+    main()
