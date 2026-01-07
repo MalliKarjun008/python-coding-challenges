@@ -42,7 +42,7 @@ def test_cases():
         pass
 
     try:
-        calculate_item_total("PROMO10", 2, -100)
+        calculate_item_total("PROMO 10", 2, -100)
         assert False
     except ValueError:
         pass
